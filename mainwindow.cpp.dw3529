@@ -1,0 +1,283 @@
+#include "mainwindow.h"
+#include "ui_mainwindow.h"
+#include<QPainter>
+#include<computation.h>
+#include<QLabel>
+#include<math.h>
+#include<QPainterPath>
+#include<unistd.h>
+int flagx=0;
+int flagy=0;
+int flagz=0;
+int init=0;
+MainWindow::MainWindow(QWidget *parent) :
+    QMainWindow(parent),
+    ui(new Ui::MainWindow)
+{
+    ui->setupUi(this);
+
+     connect(ui->pushButton_2,SIGNAL(clicked()),this,SLOT(on_pushButton_2_clicked()));
+
+}
+
+MainWindow::~MainWindow()
+{
+    delete ui;
+}
+
+
+void MainWindow::paintEvent(QPaintEvent *)
+{
+
+      Draw_Axes();
+
+
+    QString shape=ui->comboBox->currentText();
+    QString cube="Cube";
+    if(shape==cube)
+    {
+       // ui->length->setText("cube ");
+        Draw_Cube();
+    }
+
+    /*QPainter painter(this);
+    painter.setPen(Qt::blue);
+    int x=0;
+        int y=0;
+ for( x=-100;x<100;x++)
+  {
+      for(y=-100;y<100;y++)
+      {
+        int z=x*x-y*y;
+        Computation ob;
+    Computation point=ob.threeD_to_2d(x,y,z);
+    painter.drawPoint(400+point.real_x,400-point.real_y);
+    Computation point2=ob.threeD_to_2d(x,y,-z);
+    painter.drawPoint(400+point2.real_x,400-point2.real_y);
+
+      }
+  }
+
+          /*Draw_3d_line(100,0,0,100,0,100,image);
+                   Draw_3d_line(0,0,100,100,0,100,image);
+                   Draw_3d_line(0,0,0,50,200,50,image);
+                   Draw_3d_line(100,0,0,50,200,50,image);
+                   Draw_3d_line(0,0,100,50,200,50,image);
+                   Draw_3d_line(100,0,100,50,200,50,image);*/
+    QPainter sphere(this);
+        QPen pen(Qt::red, 2, Qt::SolidLine);
+       // QPainterPath path;
+
+        sphere.setPen(pen);
+         int x=0;
+           int y=0;
+          //nt z=0;
+           int count=0;
+           int count2=0;
+           Computation previous;
+           Computation previous2;
+           Computation previous3;
+           QVector<Computation> points;
+
+        for( x=-50;x<50;x=x+16)
+        {
+            for(y=-50;y<50;y=y+16)
+            {
+                int equ=(50*50-x*x-y*y);
+                if(equ<0)
+                {
+                    continue;
+                }
+            float z=sqrt(equ);
+            Computation ob;
+            ui->lineEdit->setText("x:"+QString::number(x)+"y:"+QString::number(y)+"z:"+QString::number(z)+";");
+            Computation point=ob.threeD_to_2d(x,y,z);
+            points.push_back(point);
+           /* if(count==0)
+            {
+                previous=point;
+                //count2++;
+            }
+
+            sphere.drawLine(400+previous.real_x,400-previous.real_y,400+point.real_x,400-point.real_y);
+            previous=point;
+            count++;
+
+            /*Computation point2=ob.threeD_to_2d(x,y,-z);
+            if(count==0)
+            {
+                previous2=point2;
+                //count2++;
+            }
+
+            sphere.drawLine(400+previous2.real_x,400-previous2.real_y,400+point2.real_x,400-point2.real_y);
+            previous2=point2;
+            count++;
+            }*/
+
+
+          }
+            //ui->lineEdit->setText(QString::number(count2));
+            //sphere.fillPath (path, QBrush (QColor ("blue")));
+
+           // sphere.drawPoint(400+point.real_x,400-point.real_y);
+            //Computation point1=ob.threeD_to_2d(y,-z,x);
+           // sphere.drawPoint(400+point1.real_x,400-point1.real_y);
+           // }
+            /*int x=0;
+            int y=0;
+            for( x=-50;x<50;x=x+2)
+            {
+                 y=sqrt(50*50-x*x);
+                 Computation ob;
+                 Computation point=ob.threeD_to_2d(x,y,0);
+                 sphere.drawPoint(400+point.real_x,400-point.real_y);
+                 Computation point1=ob.threeD_to_2d(x,-y,0);
+                 sphere.drawPoint(400+point1.real_x,400-point1.real_y);
+
+            }*/
+
+            //count=0;
+        }
+        int i=0;
+        for(i=1;i< points.size();i++)
+        {   int j=i-1;
+            sphere.drawLine(400+points.at(i).real_x,400-points.at(i).real_y,400+points.at(j).real_x,400-points.at(j).real_y);
+
+        }
+}
+
+
+       //ui->display->repaint();
+
+
+
+   // ui->display->show();
+
+
+
+
+
+
+
+
+void MainWindow::Draw_Axes()
+{   QPainter axes(this);
+    QPen pen(Qt::red, 2, Qt::SolidLine);
+
+    axes.setPen(pen);
+    flagz=1;
+    Draw_3d_line(0,0,-300,0,0,300,&axes);
+    flagz=0;
+    flagy=1;
+    pen.setColor(Qt::green);
+    axes.setPen(pen);
+    Draw_3d_line(0,300,0,0,-300,0,&axes);
+    flagy=0;
+    flagx=1;
+    pen.setColor(Qt::blue);
+    axes.setPen(pen);
+    Draw_3d_line(300,0,0,-300,0,0,&axes);
+    flagx=0;
+}
+
+void MainWindow::Draw_Cube()
+{
+    QPainter cube(this);
+    cube.setBrush(Qt::black);
+int length=ui->length->text().toInt();
+int bredth=ui->bredth->text().toInt();
+int hight=ui->hight->text().toInt();
+Draw_3d_line(length,0,0,length,0,bredth,&cube);
+     Draw_3d_line(length,0,bredth,length,hight,bredth,&cube);
+         Draw_3d_line(length,hight,bredth,length,hight,0,&cube);
+             Draw_3d_line(length,0,bredth,0,0,bredth,&cube);
+                 Draw_3d_line(0,0,bredth,0,hight,bredth,&cube);
+                     Draw_3d_line(0,hight,bredth,0,hight,0,&cube);
+                         Draw_3d_line(0,hight,0,length,hight,0,&cube);
+                             Draw_3d_line(length,hight,0,length,0,0,&cube);
+                                 Draw_3d_line(length,hight,bredth,0,hight,bredth,&cube);
+
+
+
+}
+
+
+void MainWindow::Draw_3d_line(int x11, int y11 , int z11, int x22, int y22 , int z22, QPainter *painter)
+{        int hight=800,width=800;
+         int origin_x=hight/2;
+         int origin_y=width/2;
+        Computation obj;
+        Computation point1=obj.threeD_to_2d(x11,y11,z11);
+        Computation point2=obj.threeD_to_2d(x22,y22,z22);
+                int x1=origin_x+point1.real_x;
+                int y1=origin_y-point1.real_y;
+                int x2=origin_x+point2.real_x;
+                int y2=origin_y-point2.real_y;
+                     if(flagx==1)
+                     {
+                     painter->setFont(QFont("Arial", 20));
+                        painter->drawText(x2,y2,"x");
+                     }
+                     else if(flagy==1)
+                     {
+                         painter->setFont(QFont("Arial", 20));
+                            painter->drawText(x2,y2,"y");
+                     }
+                     else if(flagz==1)
+                     {
+                         painter->setFont(QFont("Arial", 20));
+                            painter->drawText(x2,y2,"z");
+                     }
+       // QPainter painter(this);
+        //painter.setPen(Qt::blue);
+        painter->drawLine(x1,y1,x2,y2);
+        //painter.end();
+
+
+}
+
+
+void MainWindow::on_pushButton_2_clicked()
+{
+   ui->Displayy->clear();
+    update();
+
+    return;
+
+}
+
+void MainWindow::on_horizontalSlider_valueChanged(int value)
+{   int newvalue=value*4;
+    Computation o;
+    o.get_z_angle(newvalue);
+
+    update();
+}
+
+void MainWindow::on_horizontalSlider_2_valueChanged(int value)
+{
+    int newvalue=value*4;
+    Computation b;
+    b.get_x_angle(newvalue);
+
+    update();
+
+}
+
+void MainWindow::on_horizontalSlider_3_valueChanged(int value)
+{
+    int newvalue=value*4;
+    Computation j;
+    j.get_y_angle(newvalue);
+
+    update();
+}
+
+
+
+void MainWindow::on_init2_clicked()
+{
+    init=1;
+    update();
+}
