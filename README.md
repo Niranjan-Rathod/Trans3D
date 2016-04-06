@@ -6,6 +6,7 @@ This is Good example of implimentation of transformations and other
 basic operations tought in Computer Graphics Course.
 
 Features of Software:
+
 1] Software is Solely developed in c++ without using any external graphics libraries.
 
 2] It can draw 3D objects.
@@ -17,5 +18,6 @@ Features of Software:
 5] Scaling on mouse wheel rolling is implimented.
 
 6] It can Plot Any 2D OR 3D Equation.
+
 
 Examples of above listed features are given in README2.pdf
