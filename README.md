@@ -23,5 +23,5 @@ Features of Software:
 Examples of above listed features are given in README2.pdf
 
 
-[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/aaryanUV/trans3d/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
 
