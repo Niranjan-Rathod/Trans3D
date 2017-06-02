@@ -2,7 +2,7 @@
 Basic QT based 3D rendering Engine.
 
 Trans3D is basic 3D rendering Engine developed in QT.
-This is Good example of implimentation of transformations and other 
+This is a good example of implementation of transformations and other 
 basic operations tought in Computer Graphics Course.
 
 Features of Software:
